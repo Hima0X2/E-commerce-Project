@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmail;
 class MessageController extends Controller
 {
     public function store(Request $request)
@@ -22,14 +23,19 @@ class MessageController extends Controller
                 "Email: " . $request->email . "\n" .
                 "Subject: " . $request->subject . "\n" . // Add subject to the data
                 "Message: " . $request->message . "\n\n";
-
+        $email = $request->email;
         // Define the file path where the messages will be stored
         $filePath = storage_path('app/messages.txt');
 
-        // Append the data to the file
-        File::append($filePath, $data);
-
-        // Redirect back with a success message
-        return back()->with('success', 'Your message has been saved successfully.');
+        Mail::to($email)
+        ->send(new WelcomeEmail($request->all()));
+if($request){
+    return back()->with('success', 'Your message has been sent successfully!');
+}
+else{
+    return back()->with('error', 'Sorry!');
+}
+        // // Redirect back with a success message
+        // return back()->with('success', 'Your message has been saved successfully.');
     }
 }
