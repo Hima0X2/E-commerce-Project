@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Product; // Import the Product model
 
 class HomeController extends Controller
 {
@@ -15,9 +15,10 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-            return view('user.home');
+        $products = Product::all();
+        return view('user.home', compact('user', 'products'));
     }
-
+    
     public function logout(Request $request)
     {
         Auth::logout();
