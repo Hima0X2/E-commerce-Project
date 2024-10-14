@@ -15,4 +15,15 @@ class ProductController extends Controller
         // Pass the products to the view
         return view('user.products', compact('products'));
     }
+    public function show($id)
+    {
+        $product = Product::find($id);
+    
+        if (!$product) {
+            return redirect()->route('products')->with('error', 'Product not found.');
+        }
+    
+        return view('product.show', compact('product'));
+    }    
+
 }
