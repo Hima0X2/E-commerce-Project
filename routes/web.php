@@ -11,11 +11,8 @@ use Illuminate\Support\Facades\Route;
 
 // Store messages
 Route::post('/store-message', [MessageController::class, 'store'])->name('storeMessage');
-
 // User routes
-Route::get('/', function () {
-    return view('user.home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/home', function () {
     return view('user.home');
@@ -27,13 +24,14 @@ Route::view('/about', 'user.about')->name('about');
 
 // User login routes
 Route::get('login', [UserController::class, 'showLoginForm'])->name('login');
-Route::post('login', [UserController::class, 'login']);
+Route::post('login', [UserController::class, 'login'])->name('login');
 
 // Authenticated user redirect route
 Route::get('/redirect', [HomeController::class, 'redirect'])->name('redirect')->middleware('auth');
 
 // User product routes
 Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
 // Cart routes
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
